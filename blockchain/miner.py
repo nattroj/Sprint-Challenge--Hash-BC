@@ -24,7 +24,10 @@ def proof_of_work(last_proof):
 
     print("Searching for next proof")
     proof = 0
-    #  TODO: Your code here
+    last_hash = hashlib.sha256(str(last_proof).encode()).hexdigest()
+
+    while not valid_proof(last_hash, proof):
+        proof = random.random()
 
     print("Proof found: " + str(proof) + " in " + str(timer() - start))
     return proof
@@ -38,9 +41,11 @@ def valid_proof(last_hash, proof):
 
     IE:  last_hash: ...AE912345, new hash 12345E88...
     """
+    guess = str(proof).encode()
+    guess_hash = hashlib.sha256(guess).hexdigest()
 
     # TODO: Your code here!
-    pass
+    return last_hash[-5:] == guess_hash[:5]
 
 
 if __name__ == '__main__':
@@ -54,7 +59,7 @@ if __name__ == '__main__':
 
     # Load or create ID
     f = open("my_id.txt", "r")
-    id = f.read()
+    id = f.read().strip()
     print("ID is", id)
     f.close()
 
